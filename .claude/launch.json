@@ -6,6 +6,12 @@
       "runtimeExecutable": "php",
       "runtimeArgs": ["-S", "localhost:8765", "tests/wp-shim-server.php"],
       "port": 8765
+    },
+    {
+      "name": "video-studio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "video", "run", "studio", "--", "--port", "3010", "--no-open"],
+      "port": 3010
     }
   ]
 }

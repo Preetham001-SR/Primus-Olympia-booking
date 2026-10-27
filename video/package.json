@@ -1,0 +1,19 @@
+{
+  "name": "primus-olympia-launch-video",
+  "private": true,
+  "scripts": {
+    "capture": "node scripts/capture.mjs",
+    "audio": "python3 -I scripts/make_audio.py",
+    "studio": "remotion studio",
+    "stills": "node scripts/stills.mjs",
+    "render": "remotion render Vertical out/primus-olympia-book-site-visit.mp4 && remotion render Square out/primus-olympia-book-site-visit-1x1.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.539",
+    "@remotion/google-fonts": "^4.0.539",
+    "puppeteer-core": "^25.16.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.539"
+  }
+}
