@@ -1,0 +1,20 @@
+{
+  "name": "primus-booking",
+  "version": "1.0.0",
+  "description": "Drop-in feature for `https://www.primuslife.in/bangalore/olympia/`. It adds a hero offer strip, a section after Services, a booking modal, a 2-step qualified lead form, a \"Site visit\" item in the header ENQUIRY menus, and an FAQ entry.",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "php tests/score-test.php"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.15.0"
+  },
+  "private": true
+}

@@ -1,0 +1,116 @@
+/* Primus chauffeur site visit. Every value below is a token measured on the live Olympia page. */
+.pc-strip, .pc-visit, .pc-dialog {
+	--pc-plum: #8B2F5C;
+	--pc-plum-dark: #821A52;
+	--pc-text: #212529;
+	--pc-text-2: #4A4A4A;
+	--pc-tint: #F2E1E8;
+	--pc-line: #DEE2E6;
+	--pc-shadow: 0 5px 20px rgba(107, 27, 77, .3);
+	--pc-head: var(--primary-heading-font, "Montserrat", sans-serif);
+	--pc-body: var(--primary-para-font, "Lato", sans-serif);
+	font-family: var(--pc-body);
+	font-size: 18px;
+	line-height: 1.5;
+	letter-spacing: .48px;
+	color: var(--pc-text);
+}
+.pc-strip [hidden], .pc-visit [hidden], .pc-dialog [hidden] { display: none !important; }
+.pc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Shared text */
+.pc-text, .pc-disclaimer, .pc-note, .pc-hint, .pc-status { font-size: 18px; line-height: 1.5; margin: 0 0 16px; }
+.pc-disclaimer { color: var(--pc-text); font-style: italic; }
+.pc-hint { color: var(--pc-text-2); margin-bottom: 8px; }
+.pc-status:empty { display: none; }
+.pc-status { margin: 8px 0 0; color: var(--pc-plum-dark); font-weight: 700; }
+.pc-note a, .pc-visit a:not(.pc-btn) { color: var(--pc-plum); text-decoration: underline; }
+
+/* Button: hero submit token (plum, 6px radius, 50px tall) */
+.pc-btn {
+	display: inline-flex; align-items: center; justify-content: center;
+	min-height: 50px; padding: 12px 28px;
+	background: var(--pc-plum); color: #fff !important;
+	border: 0; border-radius: 6px;
+	font: 400 18px/1.3 var(--pc-body); letter-spacing: .48px;
+	text-decoration: none !important; text-align: center; cursor: pointer;
+}
+.pc-btn:hover { background: var(--pc-plum-dark); }
+.pc-btn[disabled] { opacity: .7; cursor: progress; }
+.pc-btn--block { width: 100%; }
+.pc-strip :focus-visible, .pc-visit :focus-visible, .pc-dialog :focus-visible { outline: 3px solid var(--pc-plum); outline-offset: 3px; }
+
+/* Hero strip */
+.pc-strip { background: var(--pc-tint); padding: 20px 0; }
+.pc-strip__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 24px; text-align: center; }
+.pc-strip__offer { margin: 0; font-size: 18px; }
+.pc-strip__note { flex-basis: 100%; margin: 0; }
+@media (max-width: 575.98px) { .pc-strip .pc-btn { width: 100%; } }
+
+/* Section */
+.pc-visit__grid { display: grid; gap: 30px; align-items: start; }
+@media (min-width: 992px) { .pc-visit__grid { grid-template-columns: 5fr 7fr; gap: 48px; } }
+.pc-steps { list-style: none; padding: 0; margin: 0 0 24px; }
+.pc-steps li { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+.pc-steps__num {
+	flex: 0 0 48px; height: 48px; border-radius: 50%;
+	display: inline-flex; align-items: center; justify-content: center;
+	background: var(--pc-plum); color: #fff; font: 600 18px/1 var(--pc-head);
+}
+.pc-steps--compact li { margin-bottom: 12px; }
+
+/* Card: services card token (15px radius, plum shadow), popup padding 30px */
+.pc-card { background: #fff; border-radius: 15px; box-shadow: var(--pc-shadow); padding: 30px; }
+@media (max-width: 575.98px) { .pc-card { padding: 20px; } }
+.pc-step__title { font: 600 24px/1.3 var(--pc-head); color: var(--pc-plum); margin: 0 0 20px; letter-spacing: .48px; }
+.pc-step__title:focus { outline: none; }
+
+/* Fields: the theme's underline field, with visible labels and a 3:1 line */
+.pc-field { margin: 0 0 24px; padding: 0; border: 0; min-width: 0; }
+.pc-field > label, .pc-field > legend { display: block; font: 700 18px/1.4 var(--pc-body); margin: 0 0 8px; padding: 0; float: none; width: auto; letter-spacing: .48px; }
+.pc-form input[type=text], .pc-form input[type=tel], .pc-form input[type=date], .pc-form select, .pc-form textarea {
+	display: block; width: 100%; min-height: 50px; padding: 10px 12px;
+	background: #fff; color: var(--pc-text);
+	border: 0; border-bottom: 1px solid var(--pc-text-2); border-radius: 0; box-shadow: none;
+	font: 400 18px/1.4 var(--pc-body); letter-spacing: .48px;
+}
+.pc-form textarea { resize: vertical; }
+.pc-form [aria-invalid=true] { border-bottom: 2px solid var(--pc-plum-dark); }
+.pc-error { margin: 8px 0 0; color: var(--pc-plum-dark); font-weight: 700; font-size: 18px; }
+.pc-error::before { content: "! "; }
+.pc-formerror { margin: 16px 0 0; padding: 12px 16px; border-left: 4px solid var(--pc-plum-dark); background: var(--pc-tint); font-weight: 700; }
+
+/* Choice pills: 48px targets, 10px radius token */
+.pc-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+.pc-choice { position: relative; margin: 0; cursor: pointer; }
+.pc-choice input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
+.pc-choice span {
+	display: inline-flex; align-items: center; min-height: 48px; padding: 10px 18px;
+	border: 1px solid var(--pc-text-2); border-radius: 10px; background: #fff; font-size: 18px;
+}
+.pc-choice input:checked + span { background: var(--pc-plum); border-color: var(--pc-plum); color: #fff; }
+.pc-choice input:focus-visible + span { outline: 3px solid var(--pc-plum); outline-offset: 3px; }
+
+.pc-check { display: flex; gap: 12px; align-items: flex-start; min-height: 48px; margin: 0 0 24px; cursor: pointer; font-size: 18px; }
+.pc-check input { flex: 0 0 24px; width: 24px; height: 24px; margin: 2px 0 0; accent-color: var(--pc-plum); }
+
+.pc-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Dialog: mirrors the enquiry popup (dark 80% overlay, white panel, x close) */
+.pc-dialog { border: 0; padding: 0; margin: auto; /* theme resets margin, which breaks native centring */ width: min(600px, calc(100% - 32px)); max-height: calc(100dvh - 32px); background: #fff; overflow: auto; }
+.pc-dialog::backdrop { background: rgba(11, 11, 11, .8); }
+.pc-dialog__inner { padding: 30px; }
+.pc-dialog__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.pc-dialog__title { font: 600 30px/1.2 var(--pc-head); color: var(--pc-plum); margin: 0; letter-spacing: .48px; }
+.pc-dialog__close { flex: 0 0 48px; width: 48px; height: 48px; border: 0; background: transparent; color: var(--pc-text); font-size: 36px; line-height: 1; cursor: pointer; }
+.pc-dialog .pc-card { box-shadow: none; padding: 0; border-radius: 0; }
+html.pc-lock { overflow: hidden; }
+@media (max-width: 575.98px) {
+	.pc-dialog { width: 100%; max-width: 100%; height: 100%; max-height: 100%; margin: 0; }
+	.pc-dialog__inner { padding: 20px; }
+	.pc-dialog__title { font-size: 24px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.pc-btn, .pc-choice span { transition: background-color .2s, color .2s; }
+}
