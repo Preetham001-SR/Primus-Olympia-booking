@@ -3,10 +3,12 @@
   "private": true,
   "scripts": {
     "capture": "node scripts/capture.mjs",
-    "audio": "python3 -I scripts/make_audio.py",
+    "audio": "arch -arm64 python3 -I scripts/make_audio.py 2>/dev/null || python3 -I scripts/make_audio.py",
     "studio": "remotion studio",
     "stills": "node scripts/stills.mjs",
-    "render": "remotion render Vertical out/primus-olympia-book-site-visit.mp4 && remotion render Square out/primus-olympia-book-site-visit-1x1.mp4"
+    "render": "remotion render Vertical out/primus-olympia-book-site-visit.mp4 && remotion render Square out/primus-olympia-book-site-visit-1x1.mp4",
+    "render:15": "node scripts/render15.mjs",
+    "voiceover": "node scripts/voiceover.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.539",

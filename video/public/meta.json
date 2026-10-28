@@ -83,5 +83,21 @@
   "plum": "rgb(139, 47, 92)",
   "heading": "Montserrat, sans-serif",
   "body": "Lato, sans-serif"
+ },
+ "step2": {
+  "w": 375,
+  "h": 224,
+  "area": {
+   "x": 32,
+   "y": 50,
+   "w": 311,
+   "h": 50
+  },
+  "date": {
+   "x": 32,
+   "y": 157,
+   "w": 311,
+   "h": 50
+  }
  }
 }

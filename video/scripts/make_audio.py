@@ -294,6 +294,59 @@ def sfx():
     return buf
 
 
+# ---------------- 15s ad (src/Ad15.tsx): 80 BPM so every scene change lands on a beat ----------------
+# Scene times in seconds, keep in sync with src/Ad15.tsx: hook 0, steps 2.25 / 4.0 / 5.75, clips 7.5 (+1.125 each), end card 12, CTA tap 13.2.
+
+DUR15 = 15.0
+BAR15 = 60 / 80 * 4  # 3 s
+
+
+def music15():
+    buf = np.zeros((int(SR * DUR15), 2))
+    chords = [CHORDS[0], CHORDS[1], CHORDS[2], CHORDS[3], CHORDS[6]]  # D, Bm7, Gmaj7, Asus4, D on the end card
+    pattern = [0, 2, 1, 3, 2, 4, 3, 2]
+    for i, (voicing, root, arp) in enumerate(chords):
+        t0 = i * BAR15
+        place(buf, pad(voicing, BAR15 + 1.2, attack=0.08 if i == 0 else 0.6), t0, gain=0.55)  # full sound from frame 1
+        place(buf, bass(root, BAR15), t0, gain=0.22)
+        for k in range(8):
+            note = arp[pattern[k] % len(arp)] + 12
+            place(buf, pluck(note), t0 + k * BAR15 / 8, pan=(-0.35 if k % 2 else 0.35), gain=0.16 + 0.03 * (k == 0))
+        if 1 <= i <= 3:
+            for b in (0, 2):
+                place(buf, soft_kick(), t0 + b * BAR15 / 4, gain=0.22)
+            for k in range(8):
+                place(buf, shaker(), t0 + (k + 0.5) * BAR15 / 8, pan=0.4, gain=0.05 + 0.015 * i)
+    place(buf, bell(86), 4 * BAR15, gain=0.10)
+    place(buf, bell(90), 4 * BAR15 + 0.33, gain=0.07)
+    t = np.arange(len(buf)) / SR
+    buf *= np.minimum(1, np.maximum(0, (DUR15 - t) / 1.0))[:, None]
+    return buf
+
+
+def sfx15():
+    buf = np.zeros((int(SR * DUR15), 2))
+    place(buf, bloom(), 0.0, gain=0.25)  # hook is on screen from frame 1, so the sound starts there too
+    place(buf, chime([74, 81]), 0.05, gain=0.14)
+    place(buf, whoosh(0.6, 250, 4000, 0.3, -0.3), 2.0, gain=0.26)  # hook moves up, step 1 in
+    place(buf, pop(700), 2.9, gain=0.16)
+    place(buf, pop(880), 3.2, gain=0.16)
+    place(buf, whoosh(0.35, 600, 7000, 0.5, 0.2), 3.85, gain=0.16)  # step 2
+    place(buf, ring(), 4.25, gain=0.17)
+    place(buf, chime([74, 78, 81]), 5.1, gain=0.22)
+    place(buf, whoosh(0.35, 600, 7000, 0.5, 0.2), 5.6, gain=0.16)  # step 3
+    place(buf, car_pass(1.0, -0.8, 0.5, settle=True), 5.85, gain=0.22)
+    place(buf, chime([69, 76]), 6.9, gain=0.14)
+    place(buf, whoosh(0.7, 250, 4000, -0.4, 0.3), 7.2, gain=0.26)  # into the lifestyle clips
+    for t in (8.625, 9.75, 10.875):
+        place(buf, whoosh(0.28, 900, 8000, 0.2, -0.2), t - 0.1, gain=0.12)
+    place(buf, swell(0.75), 11.25, gain=0.10)
+    place(buf, bloom(), 12.0, gain=0.30)
+    place(buf, tap(), 13.2, gain=0.5)
+    place(buf, chime([81, 86, 90]), 13.25, gain=0.22)
+    return buf
+
+
 # ---------------- space, loudness, limiting ----------------
 
 def reverb(x, secs=2.0, wet=0.22):
@@ -346,13 +399,15 @@ def self_check():
 if __name__ == '__main__':
     self_check()
     OUT.mkdir(parents=True, exist_ok=True)
-    m = reverb(music(), 2.4, 0.25)
-    s = reverb(sfx(), 1.2, 0.12)
-    write(OUT / 'music.wav', m)
-    write(OUT / 'sfx.wav', s)
-    mix = m * 0.85 + s
     target = -14.0  # common social/Meta delivery loudness
-    for _ in range(3):  # limiting lowers loudness a little; iterate to land on target
-        mix = limit(mix * 10 ** ((target - lufs(mix)) / 20))
-    write(OUT / 'soundtrack.wav', mix)
-    print(f'soundtrack.wav  {lufs(mix):.1f} LUFS  peak {20 * np.log10(np.abs(mix).max()):.1f} dBFS  {len(mix) / SR:.1f}s')
+    for suffix, music_fn, sfx_fn, seed in (('', music, sfx, 7), ('-15', music15, sfx15, 15)):
+        rng = np.random.default_rng(seed)  # per-cut seed: the 20s soundtrack stays byte-identical
+        m = reverb(music_fn(), 2.4, 0.25)
+        s = reverb(sfx_fn(), 1.2, 0.12)
+        write(OUT / f'music{suffix}.wav', m)  # stems: the 15s ad ducks music under the voiceover
+        write(OUT / f'sfx{suffix}.wav', s)
+        mix = m * 0.85 + s
+        for _ in range(3):  # limiting lowers loudness a little; iterate to land on target
+            mix = limit(mix * 10 ** ((target - lufs(mix)) / 20))
+        write(OUT / f'soundtrack{suffix}.wav', mix)
+        print(f'soundtrack{suffix}.wav  {lufs(mix):.1f} LUFS  peak {20 * np.log10(np.abs(mix).max()):.1f} dBFS  {len(mix) / SR:.1f}s')
