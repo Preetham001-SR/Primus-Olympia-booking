@@ -12,6 +12,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "video", "run", "studio", "--", "--port", "3010", "--no-open"],
       "port": 3010
+    },
+    {
+      "name": "olympia-demo",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "demo"],
+      "port": 8766
     }
   ]
 }
